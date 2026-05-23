@@ -4,10 +4,16 @@
 #include "glm/glm.hpp"
 #include <vector>
 
-struct ImageGenerationParameters {
-    int noiseSeed { 0 };
-    float noiseScale { 4.0f };
-    int resolution { 256 };
+struct ImageGenerationParameters
+{
+    int noiseSeed{0};
+    float noiseScale{4.0f};
+    int resolution{256};
+    int octaves{4};
+    float lacunarity{2.0f};
+    float gain{0.5f};
+    float amplitude{0.5f};
+    float frequency = {1.0f};
 };
 
 struct PointsGenerationParameters {

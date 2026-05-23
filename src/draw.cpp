@@ -58,19 +58,13 @@ void drawImGui(AppContext &context)
         ImGui::SliderFloat("Cube Scale", &context.cubeScale, 0.01f, 1.0f);
     }
 
-    if (ImGui::CollapsingHeader("Nombre d'octaves", ImGuiTreeNodeFlags_DefaultOpen))
+    if (ImGui::CollapsingHeader("Noise", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        ImGui::SliderFloat("nb couches de bruit accumulées", &context.cubeScale, 0.01f, 10.0f);
-    }
-
-    if (ImGui::CollapsingHeader("Lacunarity", ImGuiTreeNodeFlags_DefaultOpen))
-    {
-        ImGui::SliderFloat("Facteur multiplicateur de la fréquence", &context.cubeScale, 0.01f, 1.0f);
-    }
-
-    if (ImGui::CollapsingHeader("Gain", ImGuiTreeNodeFlags_DefaultOpen))
-    {
-        ImGui::SliderFloat("Facteur multiplicateur de l'amplitude", &context.cubeScale, 0.01f, 1.0f);
+        ImGui::SliderInt("Octave", &context.imageGenerationParameters.octaves, 1, 8);
+        ImGui::SliderFloat("Lacunarity", &context.imageGenerationParameters.lacunarity, 0.01f, 1.0f);
+        ImGui::SliderFloat("Gain", &context.imageGenerationParameters.gain, 0.01f, 1.0f),
+            ImGui::SliderFloat("Amplitude", &context.imageGenerationParameters.amplitude, 0.01f, 1.0f);
+        ImGui::SliderFloat("Frequency", &context.imageGenerationParameters.frequency, 0.01f, 5.0f);
     }
 
     if (ImGui::CollapsingHeader("Seed", ImGuiTreeNodeFlags_DefaultOpen))
@@ -78,9 +72,10 @@ void drawImGui(AppContext &context)
         ImGui::SliderFloat("valeur départ génération du bruit", &context.cubeScale, 0.01f, 1.0f);
     }
 
-    if (ImGui::CollapsingHeader("Scale", ImGuiTreeNodeFlags_DefaultOpen))
+    if (ImGui::Button("Appliquer"))
     {
-        ImGui::SliderFloat("taille du bruit généré", &context.cubeScale, 0.01f, 1.0f);
+        generateHeightmap(context);
+        regenerateMeshFromImage(context);
     }
 }
 
