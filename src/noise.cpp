@@ -59,6 +59,21 @@ float perlinNoiseSeeded(glm::vec2 const &position, int seed)
     return glm::perlin(position + cachedOffset);
 }
 
+float radialMask(float x, float y)
+{
+
+    // center => comme c'est de 0 à 1 on initialise a 0,5
+
+    const float center = 0.5f;
+    const float valeur = 0.4f;
+    // et maintenant il faut mettre x et y dans l'equation
+
+    float gaussian_function = (1.0f / (valeur * std::sqrt(2.0f * std::numbers::pi))) * std::exp(-((x - center) * (y - center)) / (2.0f * valeur * valeur));
+
+    return gaussian_function;
+
+    // normalisation de la fonction
+};
 
 float octaveNoise(glm::vec2 const &position, std::function<float(glm::vec2 const &)> noiseFunction, int octaves, float lacunarity, float gain, float amplitude, float frequency)
 {
@@ -68,6 +83,8 @@ float octaveNoise(glm::vec2 const &position, std::function<float(glm::vec2 const
         y += amplitude * noiseFunction(frequency * position);
         frequency *= lacunarity;
         amplitude *= gain;
+
+        /// amplitude
     }
 
     return y;

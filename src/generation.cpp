@@ -76,19 +76,13 @@ std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationPara
             float angle = std::rand() * std::numbers::pi * 2.0f;
             glm::vec2 dir = {std::sin(angle), std::cos(angle)};
 
-           
-
             float min = params.radius;
             float max = params.radius * 2;
-
-           
 
             float random = static_cast<float>(rand()) / RAND_MAX;
             float range = min + random * (max - min);
 
             glm::vec2 candidate = spawnCenter + dir * range;
-
-         
 
             if (isValid(candidate, params.sampleRegionSize, cellSize, params.radius, points, grid))
             {
@@ -124,8 +118,9 @@ void generateObjectsPositions(AppContext &context)
         context.objectPositions.emplace_back(
             p.x, // x
             p.y, // y
-            // sample height from heightmap for each point (asuming positions are normalized in [0..1] range)
-            sampleHeightmap(context, p.x, p.y));
+                 // sample height from heightmap for each point (asuming positions are normalized in [0..1] range)
+
+            sampleHeightmap(context, p.x, p.y) * radialMask(p.x, p.y));
     }
     // TODO(student): extension - filter positions by sampled height range.
 }
