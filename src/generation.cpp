@@ -5,24 +5,112 @@
 
 #include "utils/raylibUtils.hpp"
 #include <algorithm> // for std::clamp
+#include <numbers>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/norm.hpp>
+#include <iostream>
 
-
-std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationParameters const& params) {
-    std::vector<glm::vec2> positions {};
-
-    positions.reserve(1000);
-    // Naive random generation
-    for (int i {0}; i < 1000; ++i)
+bool isValid(glm::vec2 candidate, glm::vec2 sampleRegionSize, float cellSize, float radius, std::vector<glm::vec2> &points, std::vector<std::vector<int>> &grid)
+{
+    if (candidate.x >= 0 && candidate.x < sampleRegionSize.x && candidate.y >= 0 && candidate.y < sampleRegionSize.y)
     {
-        positions.emplace_back(
-            static_cast<float>(GetRandomValue(0, INT_MAX)) / static_cast<float>(INT_MAX),
-            static_cast<float>(GetRandomValue(0, INT_MAX)) / static_cast<float>(INT_MAX)
-        );
-    }
+        int cellX = static_cast<int>(candidate.x / cellSize);
+        int cellY = static_cast<int>(candidate.y / cellSize);
 
-    // TODO(student): implement Poisson disk sampling to replace the above naive random generation
-    // points output should be in [0..1] range, where (0,0) is one corner of the terrain and (1,1) is the opposite corner, so they can be easily scaled to terrain size and sampled from heightmap.
-    return positions;
+        int searchStartX = std::max(0, cellX - 2);
+        int searchEndX = std::min(cellX + 2, static_cast<int>(grid.size()) - 1);
+
+        int searchStartY = std::max(0, cellY - 2);
+        int searchEndY = std::min(cellY + 2, static_cast<int>(grid[0].size()) - 1);
+
+        for (int x = searchStartX; x <= searchEndX; x++)
+        {
+            for (int y = searchStartY; y <= searchEndY; y++)
+            {
+                int pointIndex = grid[x][y] - 1;
+                if (pointIndex != -1)
+                {
+                    float distance_carre = glm::length2(candidate - points[pointIndex]);
+                    if (distance_carre < (radius * radius))
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        return false;
+    }
+    return true;
+}
+
+std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationParameters const &params)
+{
+
+    float cellSize = params.radius / std::sqrt(2.0f);
+
+    int cellX = static_cast<int>(std::ceil(params.sampleRegionSize.x / cellSize));
+    int cellY = static_cast<int>(std::ceil(params.sampleRegionSize.y / cellSize));
+
+    std::vector<std::vector<int>> grid(cellX, std::vector<int>(cellY, 0));
+
+    std::vector<glm::vec2> points{};
+    std::vector<glm::vec2> spawnPoints{};
+
+    spawnPoints.push_back(params.sampleRegionSize / static_cast<glm::vec2>(2.0));
+
+    while (spawnPoints.size() > 0 && points.size() < 1000)
+    {
+
+        int spawnIndex = rand() % spawnPoints.size();
+
+        glm::vec2 spawnCenter = spawnPoints[spawnIndex];
+
+        bool candidateAccepted = false;
+
+        for (int i = 0; i < params.numSampleRejection; i++)
+        {
+
+            float angle = std::rand() * std::numbers::pi * 2.0f;
+            glm::vec2 dir = {std::sin(angle), std::cos(angle)};
+
+           
+
+            float min = params.radius;
+            float max = params.radius * 2;
+
+           
+
+            float random = static_cast<float>(rand()) / RAND_MAX;
+            float range = min + random * (max - min);
+
+            glm::vec2 candidate = spawnCenter + dir * range;
+
+         
+
+            if (isValid(candidate, params.sampleRegionSize, cellSize, params.radius, points, grid))
+            {
+                points.push_back(candidate);
+                spawnPoints.push_back(candidate);
+
+                int cellX = static_cast<int>(candidate.x / cellSize);
+                int cellY = static_cast<int>(candidate.y / cellSize);
+                grid[cellX][cellY] = static_cast<int>(points.size());
+
+                candidateAccepted = true;
+
+                break;
+            }
+        }
+        if (!candidateAccepted)
+        {
+            spawnPoints.erase(spawnPoints.begin() + spawnIndex);
+        }
+    };
+
+    return points;
 }
 
 void generateObjectsPositions(AppContext &context)

@@ -67,9 +67,10 @@ void drawImGui(AppContext &context)
         ImGui::SliderFloat("Frequency", &context.imageGenerationParameters.frequency, 0.01f, 5.0f);
     }
 
-    if (ImGui::CollapsingHeader("Seed", ImGuiTreeNodeFlags_DefaultOpen))
+    if (ImGui::CollapsingHeader("Poisson Disk", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        ImGui::SliderFloat("valeur départ génération du bruit", &context.cubeScale, 0.01f, 1.0f);
+        ImGui::SliderFloat("Radius", &context.pointsGenerationParameters.radius, 0.01, 0.5);
+        ImGui::SliderInt("Rejet", &context.pointsGenerationParameters.numSampleRejection, 1, 100);
     }
 
     if (ImGui::Button("Appliquer"))
