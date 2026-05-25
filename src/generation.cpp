@@ -7,6 +7,36 @@
 #include <algorithm> // for std::clamp
 
 
+struct PaletteduTerrain 
+{
+    Color eau;
+    Color sable;
+    Color herbe;
+    Color roche;
+    Color neige;
+};
+
+PaletteduTerrain PaletteTropicale
+{
+    color_from({70,130,180}),
+    color_from({238,214,175}),
+    color_from({34,139,34}),
+    color_from({100,100,100}),
+    color_from({255,255,255})
+};
+
+PaletteduTerrain PaletteDesert
+{
+    color_from({30,80,140}),
+    color_from({210,180,80}),
+    color_from({180,140,60}),
+    color_from({120,100,80}),
+    color_from({240,240,220})
+};
+
+
+
+
 std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationParameters const& params) {
     std::vector<glm::vec2> positions {};
 
