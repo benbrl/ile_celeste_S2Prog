@@ -22,6 +22,9 @@ struct PointsGenerationParameters
     int numSampleRejection{30};
     float radius{0.08};
 
+    float min_height{0.f};
+    float max_height{1.f};
+
     glm::vec2 sampleRegionSize{1.0f, 1.0f};
 };
 
