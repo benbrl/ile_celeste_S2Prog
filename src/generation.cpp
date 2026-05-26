@@ -230,12 +230,12 @@ void generateHeightmap(AppContext &context)
     // exemple conversion from heightmap to color image
     context.image = TransformImage<float, Color>(context.heightmapImage, [&](float const &v, int const, int const)
     {
-    const PaletteduTerrain p = context.colorPalette;
+    const Environnement env = context.env;
+    const PaletteduTerrain p = env.biomeNormal;
 
     const Color eau_profonde = color_from({ 10, 30, 120 });// eau profonde on garde la même partout
 
-    // Eau profonde - eau claire
-    if (v<0.01){
+    if (v < 0.01){
         return eau_profonde;
     }
     if (v < 0.07f)
@@ -247,7 +247,6 @@ void generateHeightmap(AppContext &context)
         );
     }
 
-    // Eau -> sable
     else if (v < 0.15f)
     {
         return lerpColor(
@@ -257,7 +256,6 @@ void generateHeightmap(AppContext &context)
         );
     }
 
-    // Sable -> herbe
     else if (v < 0.45f)
     {
         return lerpColor(
@@ -267,7 +265,6 @@ void generateHeightmap(AppContext &context)
         );
     }
 
-    // Herbe -> roche
     else if (v < 0.70f)
     {
         return lerpColor(
@@ -277,7 +274,6 @@ void generateHeightmap(AppContext &context)
         );
     }
 
-    // Roche -> neige
     else if (v <1.0f)
     {
         return lerpColor(

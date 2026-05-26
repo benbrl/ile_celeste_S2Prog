@@ -55,15 +55,15 @@ void drawImGui(AppContext &context)
 
     if (ImGui::CollapsingHeader("Colors Palettes",ImGuiTreeNodeFlags_DefaultOpen)){
         if (ImGui::Button("Palette Tropicale")){
-            context.colorPalette = PaletteTropicale;
+            context.env = EnvironnementTropical;
             generateHeightmap(context);
         }
         if (ImGui::Button("Palette Desert")){
-            context.colorPalette = PaletteDesert;
+            context.env = EnvironnementDesertique;
             generateHeightmap(context);
         }
         if (ImGui::Button("Palette Ile celeste")){
-            context.colorPalette = PaletteCeleste;
+            context.env = EnvironnementCeleste;
             generateHeightmap(context);
         }
     }        
