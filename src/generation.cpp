@@ -10,6 +10,36 @@
 #include <glm/gtx/norm.hpp>
 #include <iostream>
 
+
+struct PaletteduTerrain 
+{
+    Color eau;
+    Color sable;
+    Color herbe;
+    Color roche;
+    Color neige;
+};
+
+PaletteduTerrain PaletteTropicale
+{
+    color_from({70,130,180}),
+    color_from({238,214,175}),
+    color_from({34,139,34}),
+    color_from({100,100,100}),
+    color_from({255,255,255})
+};
+
+PaletteduTerrain PaletteDesert
+{
+    color_from({30,80,140}),
+    color_from({210,180,80}),
+    color_from({180,140,60}),
+    color_from({120,100,80}),
+    color_from({240,240,220})
+};
+
+
+
 bool isValid(glm::vec2 candidate, glm::vec2 sampleRegionSize, float cellSize, float radius, std::vector<glm::vec2> &points, std::vector<std::vector<int>> &grid)
 {
     if (candidate.x >= 0 && candidate.x < sampleRegionSize.x && candidate.y >= 0 && candidate.y < sampleRegionSize.y)
@@ -76,19 +106,13 @@ std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationPara
             float angle = std::rand() * std::numbers::pi * 2.0f;
             glm::vec2 dir = {std::sin(angle), std::cos(angle)};
 
-           
-
             float min = params.radius;
             float max = params.radius * 2;
-
-           
 
             float random = static_cast<float>(rand()) / RAND_MAX;
             float range = min + random * (max - min);
 
             glm::vec2 candidate = spawnCenter + dir * range;
-
-         
 
             if (isValid(candidate, params.sampleRegionSize, cellSize, params.radius, points, grid))
             {
@@ -127,7 +151,8 @@ void generateObjectsPositions(AppContext &context)
         context.objectPositions.emplace_back(
             p.x, // x
             p.y, // y
-            // sample height from heightmap for each point (asuming positions are normalized in [0..1] range)
+                 // sample height from heightmap for each point (asuming positions are normalized in [0..1] range)
+
             sampleHeightmap(context, p.x, p.y));
         */
         float height = sampleHeightmap(context, p.x, p.y);
@@ -186,22 +211,18 @@ void generateHeightmap(AppContext &context)
     [&](glm::vec2 const &p) -> float
     {
         // TODO(student): implement stack based noise and island mask
-
-        return octaveNoise(
-            p,
-            perlinNoise,
-
-            context.imageGenerationParameters.octaves,
-            context.imageGenerationParameters.lacunarity,
-            context.imageGenerationParameters.gain,
-            context.imageGenerationParameters.amplitude,
-            context.imageGenerationParameters.frequency)
-
-            ;
-        //  context.
-
-        //   perlinNoiseSeeded(p * context.imageGenerationParameters.noiseScale, context.imageGenerationParameters.noiseSeed) * 0.5f + 0.5f);
-    });
+                                                                  float octave_noise = octaveNoise(
+                                                                      p,
+                                                                      perlinNoise,
+                                                                      context.imageGenerationParameters.octaves,
+                                                                      context.imageGenerationParameters.lacunarity,
+                                                                      context.imageGenerationParameters.gain,
+                                                                      context.imageGenerationParameters.amplitude,
+                                                                      context.imageGenerationParameters.frequency)
+                                                                    
+                                                                  return octave_noise * radialMask(p.x, p.y);
+                                                                  //   perlinNoiseSeeded(p * context.imageGenerationParameters.noiseScale, context.imageGenerationParameters.noiseSeed) * 0.5f + 0.5f);
+                                                              });
 
     // exemple conversion from heightmap to color image
     context.image = TransformImage<float, Color>(context.heightmapImage, [&](float const &v, int const, int const)
