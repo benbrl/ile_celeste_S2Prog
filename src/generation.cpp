@@ -113,14 +113,23 @@ void generateObjectsPositions(AppContext &context)
 
     context.objectPositions.clear();
     context.objectPositions.reserve(positions.size());
+    float min_height = context.pointsGenerationParameters.min_height; // en dessous de la mer
+    float max_height = context.pointsGenerationParameters.max_height; // au dessus des nuages tah le dragon celeste
     for (glm::vec2 const &p : positions)
     {
+        /*
         context.objectPositions.emplace_back(
             p.x, // x
             p.y, // y
                  // sample height from heightmap for each point (asuming positions are normalized in [0..1] range)
 
             sampleHeightmap(context, p.x, p.y));
+        */
+        float height = sampleHeightmap(context, p.x, p.y);
+        if (height >= min_height && height <= max_height)
+        {
+            context.objectPositions.emplace_back(p.x, p.y, height);
+        }
     }
     // TODO(student): extension - filter positions by sampled height range.
 }
@@ -190,7 +199,7 @@ void generateHeightmap(AppContext &context)
     // exemple conversion from heightmap to color image
     context.image = TransformImage<float, Color>(context.heightmapImage, [&](float const &v, int const, int const)
                                                  {
-                                                     if (v < 0.3f)
+                                                     if (v < 0.1f)
                                                      {
                                                          return color_from({70, 130, 180}); // water
                                                      }
