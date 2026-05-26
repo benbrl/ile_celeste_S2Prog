@@ -9,15 +9,19 @@ Le point un peu bloquant a été quand on appelle une fonction dans une autre fo
 Je ne comprenais pas bien le principe, mais Jules Fouchy me l’a expliqué ! (Fun fact : c’est le même système dans Coollab !)
 Après, j’ai ajouté une ImGui, sans oublier d’ajouter un bouton "Appliquer", sinon ça ne recharge pas les fonctions.
 
-## 2) Bruit fractal
+## 2) Génération de heightmap et couleurs
 
 Pour le masque, je suis parti de la fonction gaussienne trouvée sur Wikipédia. Je l’ai ensuite utilisée dans GeoGebra afin de tester différents paramètres et de mieux comprendre son fonctionnement.
-
-Cependant, nous avons besoin de points ((x, y)). Il nous faut donc une fonction gaussienne bidimensionnelle, que j’ai trouvée sur ce site : [Fonction gaussienne bidimensionnelle](https://wikiland.org/fr/Gaussian_function).
 
 ![GeoGebra fonction gaussienne](screenshots/geogebra.png)
 
 ![Calcul mathématique](screenshots/graphique_fonction_gaussienne.jpg)
+
+Cependant, nous avons besoin de points ((x, y)). Il nous faut donc une fonction gaussienne bidimensionnelle, que j’ai trouvée sur ce site : [Fonction gaussienne bidimensionnelle](https://wikiland.org/fr/Gaussian_function).
+
+
+
+![GeoGebra fonction gaussienne 3D](screenshots/geogebra_3D.png)
 
 ## 3) Distribution de points par Poisson disk sampling
 

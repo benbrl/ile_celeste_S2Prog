@@ -120,7 +120,7 @@ void generateObjectsPositions(AppContext &context)
             p.y, // y
                  // sample height from heightmap for each point (asuming positions are normalized in [0..1] range)
 
-            sampleHeightmap(context, p.x, p.y) * radialMask(p.x, p.y));
+            sampleHeightmap(context, p.x, p.y));
     }
     // TODO(student): extension - filter positions by sampled height range.
 }
@@ -174,19 +174,16 @@ void generateHeightmap(AppContext &context)
                                                               {
                                                                   // TODO(student): implement stack based noise and island mask
 
-                                                                  return octaveNoise(
+                                                                  float octave_noise = octaveNoise(
                                                                       p,
                                                                       perlinNoise,
-
                                                                       context.imageGenerationParameters.octaves,
                                                                       context.imageGenerationParameters.lacunarity,
                                                                       context.imageGenerationParameters.gain,
                                                                       context.imageGenerationParameters.amplitude,
-                                                                      context.imageGenerationParameters.frequency)
+                                                                      context.imageGenerationParameters.frequency);
 
-                                                                      ;
-                                                                  //  context.
-
+                                                                  return octave_noise * radialMask(p);
                                                                   //   perlinNoiseSeeded(p * context.imageGenerationParameters.noiseScale, context.imageGenerationParameters.noiseSeed) * 0.5f + 0.5f);
                                                               });
 
