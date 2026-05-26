@@ -8,6 +8,7 @@
 #include <functional>
 #include <numbers>
 
+
 namespace
 {
 
@@ -59,6 +60,16 @@ float perlinNoiseSeeded(glm::vec2 const &position, int seed)
     return glm::perlin(position + cachedOffset);
 }
 
+float radialMask(glm::vec2 const &p)
+{
+
+    // normalisation de la fonction
+    float normalize_position_x = (p.x - 0.5) / 0.5;
+    float normalize_position_y = (p.y - 0.5) / 0.5;
+
+    float gaussian_function = std::exp(-normalize_position_x * normalize_position_x - normalize_position_y * normalize_position_y);
+    return gaussian_function;
+}
 
 float octaveNoise(glm::vec2 const &position, std::function<float(glm::vec2 const &)> noiseFunction, int octaves, float lacunarity, float gain, float amplitude, float frequency)
 {
@@ -68,6 +79,8 @@ float octaveNoise(glm::vec2 const &position, std::function<float(glm::vec2 const
         y += amplitude * noiseFunction(frequency * position);
         frequency *= lacunarity;
         amplitude *= gain;
+
+        /// amplitude
     }
 
     return y;

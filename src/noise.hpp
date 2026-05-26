@@ -9,4 +9,4 @@ float octaveNoise(
     glm::vec2 const &position, std::function<float(glm::vec2 const &)> noiseFunction,
     int octaves, float lacunarity, float gain, float amplitude, float frequency);
 
-float radialMask();
+float radialMask(float x, float y);
