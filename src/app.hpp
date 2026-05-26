@@ -1,6 +1,7 @@
 #pragma once
 
 #include "raylib.h"
+#include "utils/raylibUtils.hpp"
 #include "glm/glm.hpp"
 #include <vector>
 
@@ -26,6 +27,42 @@ struct PointsGenerationParameters
     float max_height{1.f};
 
     glm::vec2 sampleRegionSize{1.0f, 1.0f};
+};
+
+struct PaletteduTerrain 
+{
+    Color eau;
+    Color sable;
+    Color herbe;
+    Color roche;
+    Color neige;
+};
+
+inline const PaletteduTerrain PaletteTropicale
+{
+    color_from({70,130,180}),
+    color_from({238,214,175}),
+    color_from({34,139,34}),
+    color_from({100,100,100}),
+    color_from({255,255,255})
+};
+
+inline const PaletteduTerrain PaletteDesert
+{
+    color_from({30,80,140}),
+    color_from({210,180,80}),
+    color_from({180,140,60}),
+    color_from({120,100,80}),
+    color_from({240,240,220})
+};
+
+inline const PaletteduTerrain PaletteCeleste
+{
+    color_from({40, 60, 110}),    
+    color_from({210, 230, 245}),  
+    color_from({110, 210, 180}),  
+    color_from({140, 150, 190}),  
+    color_from({255, 255, 255})   
 };
 
 struct AppContext
@@ -59,6 +96,8 @@ struct AppContext
 
     // Parameters for island generation
     ImageGenerationParameters imageGenerationParameters;
+
+    PaletteduTerrain colorPalette = PaletteTropicale;
 };
 
 Matrix getTerrainCenteringMatrix(AppContext const &context);
