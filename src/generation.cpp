@@ -10,6 +10,11 @@
 #include <glm/gtx/norm.hpp>
 #include <iostream>
 
+
+
+
+
+
 bool isValid(glm::vec2 candidate, glm::vec2 sampleRegionSize, float cellSize, float radius, std::vector<glm::vec2> &points, std::vector<std::vector<int>> &grid)
 {
     if (candidate.x >= 0 && candidate.x < sampleRegionSize.x && candidate.y >= 0 && candidate.y < sampleRegionSize.y)
@@ -147,12 +152,40 @@ float sampleHeightmap(AppContext const &context, float u, float v)
     {
         float const *heightData = static_cast<float const *>(context.heightmapImage.data);
         int const idx = py * context.heightmapImage.width + px;
-        return std::clamp(heightData[idx], 0.0f, 1.0f);
+        return std::clamp(heightData[idx], 0.f, 1.0f);
     }
 
     // Otherwise, we assume it's in a color format and we read the red channel as height (with normalization from [0..255] to [0..1]).
     Color const c = GetImageColor(context.heightmapImage, px, py);
     return static_cast<float>(c.r) / 255.0f;
+}
+
+Color lerpColor(const Color& col1, const Color& col2, float ratio)
+{
+
+    Color result;
+
+    result.r = static_cast<unsigned char>(
+        col1.r + (col2.r - col1.r) * ratio
+    );
+
+    result.g = static_cast<unsigned char>(
+        col1.g + (col2.g - col1.g) * ratio
+    );
+
+    result.b = static_cast<unsigned char>(
+        col1.b + (col2.b - col1.b) * ratio
+    );
+
+    result.a = static_cast<unsigned char>(
+        col1.a + (col2.a - col1.a) * ratio
+    );
+
+    return result;
+}
+
+float ratio(float inf, float sup, float num){
+    return (num-inf)/(sup-inf);
 }
 
 void generateHeightmap(AppContext &context)
@@ -179,38 +212,81 @@ void generateHeightmap(AppContext &context)
     int const resolution = std::max(1, context.imageGenerationParameters.resolution);
 
     context.heightmapImage = GenImageFromNoiseFunction<float>(resolution, resolution, PIXELFORMAT_UNCOMPRESSED_R32,
-                                                              [&](glm::vec2 const &p) -> float
-                                                              {
-                                                                  // TODO(student): implement stack based noise and island mask
-
-                                                                  float octave_noise = octaveNoise(
-                                                                      p,
-                                                                      perlinNoise,
-                                                                      context.imageGenerationParameters.octaves,
-                                                                      context.imageGenerationParameters.lacunarity,
-                                                                      context.imageGenerationParameters.gain,
-                                                                      context.imageGenerationParameters.amplitude,
-                                                                      context.imageGenerationParameters.frequency);
-
-                                                                  return octave_noise * radialMask(p);
-                                                                  //   perlinNoiseSeeded(p * context.imageGenerationParameters.noiseScale, context.imageGenerationParameters.noiseSeed) * 0.5f + 0.5f);
-                                                              });
+    [&](glm::vec2 const &p) -> float
+    {
+        // TODO(student): implement stack based noise and island mask
+        float octave_noise = octaveNoise(
+            p,
+            perlinNoise,
+            context.imageGenerationParameters.octaves,
+            context.imageGenerationParameters.lacunarity,
+            context.imageGenerationParameters.gain,
+            context.imageGenerationParameters.amplitude,
+            context.imageGenerationParameters.frequency);
+        
+     return octave_noise * radialMask(p);
+        //   perlinNoiseSeeded(p * context.imageGenerationParameters.noiseScale, context.imageGenerationParameters.noiseSeed) * 0.5f + 0.5f);
+    });
 
     // exemple conversion from heightmap to color image
     context.image = TransformImage<float, Color>(context.heightmapImage, [&](float const &v, int const, int const)
-                                                 {
-                                                     if (v < 0.1f)
-                                                     {
-                                                         return color_from({70, 130, 180}); // water
-                                                     }
-                                                     else if (v < 0.5f)
-                                                     {
-                                                         return color_from({238, 214, 175}); // sand
-                                                     }
-                                                     else
-                                                     {
-                                                         return color_from({34, 139, 34}); // grass
-                                                     } }, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
+    {
+    const Environnement env = context.env;
+    const PaletteduTerrain p = env.biomeNormal;
+
+    const Color eau_profonde = color_from({ 10, 30, 120 });// eau profonde on garde la même partout
+
+    if (v < 0.01){
+        return eau_profonde;
+    }
+    if (v < 0.07f)
+    {
+        return lerpColor(
+            eau_profonde, 
+            p.eau,
+            ratio(0.01f, 0.07f, v)
+        );
+    }
+
+    else if (v < 0.15f)
+    {
+        return lerpColor(
+            p.eau,
+            p.sable,
+            ratio(0.07f, 0.15f, v)
+        );
+    }
+
+    else if (v < 0.45f)
+    {
+        return lerpColor(
+            p.sable,
+            p.herbe,
+            ratio(0.15f, 0.45f, v)
+        );
+    }
+
+    else if (v < 0.70f)
+    {
+        return lerpColor(
+            p.herbe,
+            p.roche,
+            ratio(0.45f, 0.70f, v)
+        );
+    }
+
+    else if (v <1.0f)
+    {
+        return lerpColor(
+            p.roche,
+            p.neige,
+            ratio(0.70f, 1.0f, v)
+        );
+    }
+    else {
+        return p.neige;
+    }
+    }, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
 
     context.texture = LoadTextureFromImage(context.image);
     if (context.model.meshCount > 0)
