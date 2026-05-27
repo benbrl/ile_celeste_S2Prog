@@ -137,6 +137,8 @@ struct AppContext
     // The generated terrain mesh and model.
     Mesh mesh{};
     Model model{};
+    Model tree = LoadModel("../../resources/low-poly-tree.obj");
+
 
     std::vector<glm::vec3> objectPositions{};
 
@@ -153,6 +155,7 @@ struct AppContext
 
     Environnement env = EnvironnementTropical;
 };
+
 
 Matrix getTerrainCenteringMatrix(AppContext const &context);
 float sampleHeightmap(AppContext const &context, float u, float v);
