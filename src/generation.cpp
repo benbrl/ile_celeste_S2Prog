@@ -131,8 +131,9 @@ void generateObjectsPositions(AppContext &context)
             sampleHeightmap(context, p.x, p.y));
         */
         float height = sampleHeightmap(context, p.x, p.y);
-        if (height >= min_height && height <= max_height){
-            context.objectPositions.emplace_back(p.x,p.y,height);
+        if (height >= min_height && height <= max_height)
+        {
+            context.objectPositions.emplace_back(p.x, p.y, height);
         }
     }
     // TODO(student): extension - filter positions by sampled height range.
@@ -223,7 +224,7 @@ void generateHeightmap(AppContext &context)
             context.imageGenerationParameters.amplitude,
             context.imageGenerationParameters.frequency);
         
-        return octave_noise;
+     return octave_noise * radialMask(p);
         //   perlinNoiseSeeded(p * context.imageGenerationParameters.noiseScale, context.imageGenerationParameters.noiseSeed) * 0.5f + 0.5f);
     });
 
