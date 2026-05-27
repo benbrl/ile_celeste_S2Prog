@@ -55,6 +55,22 @@ void drawImGui(AppContext &context)
         generateObjectsPositions(context); 
     }
 
+    if (ImGui::CollapsingHeader("Colors Palettes",ImGuiTreeNodeFlags_DefaultOpen)){
+        if (ImGui::Button("Palette Tropicale")){
+            context.env = EnvironnementTropical;
+            generateHeightmap(context);
+        }
+        if (ImGui::Button("Palette Desert")){
+            context.env = EnvironnementDesertique;
+            generateHeightmap(context);
+        }
+        if (ImGui::Button("Palette Ile celeste")){
+            context.env = EnvironnementCeleste;
+            generateHeightmap(context);
+        }
+    }        
+
+
     if (ImGui::CollapsingHeader("objects", ImGuiTreeNodeFlags_DefaultOpen))
     {
         ImGui::SliderFloat("Cube Scale", &context.cubeScale, 0.01f, 1.0f);
@@ -69,10 +85,12 @@ void drawImGui(AppContext &context)
         ImGui::SliderFloat("Frequency", &context.imageGenerationParameters.frequency, 0.01f, 5.0f);
     }
 
-    if (ImGui::CollapsingHeader("Poisson Disk", ImGuiTreeNodeFlags_DefaultOpen))
+    if (ImGui::CollapsingHeader("Points generation", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        ImGui::SliderFloat("Radius", &context.pointsGenerationParameters.radius, 0.01, 0.5);
+        ImGui::SliderFloat("Poisson disk radius", &context.pointsGenerationParameters.radius, 0.01, 0.5);
         ImGui::SliderInt("Rejet", &context.pointsGenerationParameters.numSampleRejection, 1, 100);
+        ImGui::SliderFloat("minimum height",&context.pointsGenerationParameters.min_height, 0.f, 1.f);
+        ImGui::SliderFloat("maximum height",&context.pointsGenerationParameters.max_height, 0.f, 1.f);
     }
 
     if (ImGui::Button("Appliquer"))
