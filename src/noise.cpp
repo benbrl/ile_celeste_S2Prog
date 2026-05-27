@@ -8,7 +8,6 @@
 #include <functional>
 #include <numbers>
 
-
 namespace
 {
 
@@ -67,7 +66,9 @@ float radialMask(glm::vec2 const &p)
     float normalize_position_x = (p.x - 0.5) / 0.5;
     float normalize_position_y = (p.y - 0.5) / 0.5;
 
-    float gaussian_function = std::exp(-normalize_position_x * normalize_position_x - normalize_position_y * normalize_position_y);
+    float facteur_scale = 3.5f;
+
+    float gaussian_function = std::exp(facteur_scale * (-normalize_position_x * normalize_position_x - normalize_position_y * normalize_position_y));
     return gaussian_function;
 }
 
