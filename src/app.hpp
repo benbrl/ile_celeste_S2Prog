@@ -1,6 +1,7 @@
 #pragma once
 
 #include "raylib.h"
+#include "utils/raylibUtils.hpp"
 #include "glm/glm.hpp"
 #include <vector>
 
@@ -25,6 +26,11 @@ struct PointsGenerationParameters
     glm::vec2 sampleRegionSize{1.0f, 1.0f};
 };
 
+
+
+
+
+
 struct AppContext
 {
     Camera camera{};
@@ -43,6 +49,8 @@ struct AppContext
     // The generated terrain mesh and model.
     Mesh mesh{};
     Model model{};
+    Model tree = LoadModel("../../resources/low-poly-tree.obj");
+
 
     std::vector<glm::vec3> objectPositions{};
 
@@ -57,6 +65,7 @@ struct AppContext
     // Parameters for island generation
     ImageGenerationParameters imageGenerationParameters;
 };
+
 
 Matrix getTerrainCenteringMatrix(AppContext const &context);
 float sampleHeightmap(AppContext const &context, float u, float v);

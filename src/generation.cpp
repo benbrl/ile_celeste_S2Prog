@@ -197,6 +197,9 @@ void generateHeightmap(AppContext &context)
         context.heightmapImage = {};
     }
 
+
+
+
     int const resolution = std::max(1, context.imageGenerationParameters.resolution);
 
     context.heightmapImage = GenImageFromNoiseFunction<float>(resolution, resolution, PIXELFORMAT_UNCOMPRESSED_R32,
@@ -204,7 +207,7 @@ void generateHeightmap(AppContext &context)
                                                               {
                                                                   // TODO(student): implement stack based noise and island mask
 
-                                                                  float octave_noise = octaveNoise(
+                                                                  return octaveNoise(
                                                                       p,
                                                                       perlinNoise,
                                                                       context.imageGenerationParameters.octaves,
@@ -216,7 +219,7 @@ void generateHeightmap(AppContext &context)
                                                                       ;
                                                                   //  context.
 
-                                                                  return octave_noise * radialMask(p.x, p.y);
+                                                                //   return octave_noise * radialMask(p.x, p.y);
                                                                   //   perlinNoiseSeeded(p * context.imageGenerationParameters.noiseScale, context.imageGenerationParameters.noiseSeed) * 0.5f + 0.5f);
                                                               });
 
