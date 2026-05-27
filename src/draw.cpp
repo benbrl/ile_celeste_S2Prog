@@ -42,12 +42,18 @@ void drawCubes(AppContext const &context, Matrix const &terrainCentering)
         Matrix const centeredTranslation{MatrixMultiply(objectTranslation, terrainCentering)};
         Matrix const scale{MatrixScale(context.cubeScale, context.cubeScale, context.cubeScale)};
         Matrix const transform{MatrixMultiply(scale, centeredTranslation)};
-        DrawMesh(context.cube, context.cubeMaterial, transform);
+        Vector3 treePosition = {pos.x * context.terrainSize.x - context.terrainSize.x * 0.5f, pos.z * context.terrainSize.y, pos.y * context.terrainSize.z - context.terrainSize.z * 0.5f};
+        DrawModel(context.tree, treePosition, 0.5F, WHITE);
     }
 }
 
 void drawImGui(AppContext &context)
 {
+    if (ImGui::Button("Generate random positions"))
+    {
+        generateObjectsPositions(context);
+    }
+
     if (ImGui::CollapsingHeader("Colors Palettes", ImGuiTreeNodeFlags_DefaultOpen))
     {
         if (ImGui::Button("Palette Tropicale"))
@@ -87,17 +93,6 @@ void drawImGui(AppContext &context)
         ImGui::SliderInt("Rejet", &context.pointsGenerationParameters.numSampleRejection, 1, 100);
         ImGui::SliderFloat("minimum height", &context.pointsGenerationParameters.min_height, 0.f, 1.f);
         ImGui::SliderFloat("maximum height", &context.pointsGenerationParameters.max_height, 0.f, 1.f);
-    }
-
-    if (ImGui::CollapsingHeader("Mask", ImGuiTreeNodeFlags_DefaultOpen))
-    {
-        ImGui::SliderFloat("Mask Amplitude", &context.maskGenerationParameters.mask_amplitude, 0.5, 1);
-        ImGui::SliderFloat("Mask Scale", &context.maskGenerationParameters.mask_scale, 1, 5);
-    }
-
-    if (ImGui::Button("Generate random positions"))
-    {
-        generateObjectsPositions(context);
     }
 
     if (ImGui::Button("Appliquer"))

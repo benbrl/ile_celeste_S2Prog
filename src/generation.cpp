@@ -201,6 +201,9 @@ void generateHeightmap(AppContext &context)
         context.heightmapImage = {};
     }
 
+
+
+
     int const resolution = std::max(1, context.imageGenerationParameters.resolution);
 
     context.heightmapImage = GenImageFromNoiseFunction<float>(resolution, resolution, PIXELFORMAT_UNCOMPRESSED_R32,
