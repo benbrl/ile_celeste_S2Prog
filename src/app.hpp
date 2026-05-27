@@ -29,9 +29,13 @@ struct PointsGenerationParameters
     glm::vec2 sampleRegionSize{1.0f, 1.0f};
 };
 
+struct MaskGenerationParameters
+{
+    float mask_amplitude{1.f};
+    float mask_scale{3.5f};
+};
 
-
-struct PaletteduTerrain 
+struct PaletteduTerrain
 {
     Color eau;
     Color sable;
@@ -40,7 +44,7 @@ struct PaletteduTerrain
     Color neige;
 };
 
-struct Environnement 
+struct Environnement
 {
     PaletteduTerrain biomeSec;
     PaletteduTerrain biomeNormal;
@@ -53,71 +57,59 @@ inline const Environnement EnvironnementTropical = {
         Color{240, 220, 180, 255},
         Color{155, 165, 80, 255},
         Color{120, 110, 100, 255},
-        Color{255, 255, 255, 255}
-    },
+        Color{255, 255, 255, 255}},
     PaletteduTerrain{
-        Color{70, 130, 180, 255},  
-        Color{238, 214, 175, 255}, 
-        Color{34, 139, 34, 255},   
-        Color{100, 100, 100, 255}, 
-        Color{255, 255, 255, 255}  
-    },
+        Color{70, 130, 180, 255},
+        Color{238, 214, 175, 255},
+        Color{34, 139, 34, 255},
+        Color{100, 100, 100, 255},
+        Color{255, 255, 255, 255}},
     PaletteduTerrain{
         Color{30, 140, 160, 255},
         Color{220, 200, 160, 255},
         Color{10, 90, 45, 255},
         Color{80, 90, 85, 255},
-        Color{240, 250, 250, 255}
-    }
-};
+        Color{240, 250, 250, 255}}};
 
 inline const Environnement EnvironnementDesertique = {
     PaletteduTerrain{
-        Color{25, 70, 120, 255},   
-        Color{225, 195, 100, 255}, 
-        Color{210, 180, 80, 255},  
-        Color{140, 100, 70, 255},  
-        Color{245, 235, 210, 255}  
-    },
+        Color{25, 70, 120, 255},
+        Color{225, 195, 100, 255},
+        Color{210, 180, 80, 255},
+        Color{140, 100, 70, 255},
+        Color{245, 235, 210, 255}},
     PaletteduTerrain{
-        Color{30, 80, 140, 255},   
-        Color{210, 180, 80, 255},  
-        Color{180, 140, 60, 255},  
-        Color{120, 100, 80, 255},  
-        Color{240, 240, 220, 255}  
-    },
+        Color{30, 80, 140, 255},
+        Color{210, 180, 80, 255},
+        Color{180, 140, 60, 255},
+        Color{120, 100, 80, 255},
+        Color{240, 240, 220, 255}},
     PaletteduTerrain{
         Color{40, 120, 180, 255},
-        Color{200, 170, 80, 255},  
-        Color{76, 133, 76, 255},   
-        Color{110, 100, 90, 255},  
-        Color{255, 255, 255, 255}  
-    }
-};
+        Color{200, 170, 80, 255},
+        Color{76, 133, 76, 255},
+        Color{110, 100, 90, 255},
+        Color{255, 255, 255, 255}}};
 
 inline const Environnement EnvironnementCeleste = {
     PaletteduTerrain{
-        Color{30, 40, 90, 255},    
-        Color{190, 200, 230, 255}, 
-        Color{130, 110, 180, 255}, 
-        Color{110, 110, 150, 255}, 
-        Color{230, 240, 255, 255}  
-    },
+        Color{30, 40, 90, 255},
+        Color{190, 200, 230, 255},
+        Color{130, 110, 180, 255},
+        Color{110, 110, 150, 255},
+        Color{230, 240, 255, 255}},
     PaletteduTerrain{
-        Color{40, 60, 110, 255},    
-        Color{210, 230, 245, 255},  
-        Color{110, 210, 180, 255}, 
-        Color{140, 150, 190, 255},  
-        Color{255, 255, 255, 255}   
-    },
+        Color{40, 60, 110, 255},
+        Color{210, 230, 245, 255},
+        Color{110, 210, 180, 255},
+        Color{140, 150, 190, 255},
+        Color{255, 255, 255, 255}},
     PaletteduTerrain{
-        Color{50, 90, 160, 255},   
-        Color{220, 240, 250, 255}, 
-        Color{40, 180, 160, 255},  
-        Color{150, 140, 200, 255}, 
-        Color{255, 255, 255, 255}  
-    }
-};
+        Color{50, 90, 160, 255},
+        Color{220, 240, 250, 255},
+        Color{40, 180, 160, 255},
+        Color{150, 140, 200, 255},
+        Color{255, 255, 255, 255}}};
 
 struct AppContext
 {
@@ -150,6 +142,8 @@ struct AppContext
 
     // Parameters for island generation
     ImageGenerationParameters imageGenerationParameters;
+
+    MaskGenerationParameters maskGenerationParameters;
 
     Environnement env = EnvironnementTropical;
 };

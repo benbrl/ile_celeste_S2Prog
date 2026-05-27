@@ -48,26 +48,24 @@ void drawCubes(AppContext const &context, Matrix const &terrainCentering)
 
 void drawImGui(AppContext &context)
 {
-    if (ImGui::Button("Generate random positions"))
+    if (ImGui::CollapsingHeader("Colors Palettes", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        generateObjectsPositions(context);
-    }
-
-    if (ImGui::CollapsingHeader("Colors Palettes",ImGuiTreeNodeFlags_DefaultOpen)){
-        if (ImGui::Button("Palette Tropicale")){
+        if (ImGui::Button("Palette Tropicale"))
+        {
             context.env = EnvironnementTropical;
             generateHeightmap(context);
         }
-        if (ImGui::Button("Palette Desert")){
+        if (ImGui::Button("Palette Desert"))
+        {
             context.env = EnvironnementDesertique;
             generateHeightmap(context);
         }
-        if (ImGui::Button("Palette Ile celeste")){
+        if (ImGui::Button("Palette Ile celeste"))
+        {
             context.env = EnvironnementCeleste;
             generateHeightmap(context);
         }
-    }        
-
+    }
 
     if (ImGui::CollapsingHeader("objects", ImGuiTreeNodeFlags_DefaultOpen))
     {
@@ -87,8 +85,19 @@ void drawImGui(AppContext &context)
     {
         ImGui::SliderFloat("Poisson disk radius", &context.pointsGenerationParameters.radius, 0.01, 0.5);
         ImGui::SliderInt("Rejet", &context.pointsGenerationParameters.numSampleRejection, 1, 100);
-        ImGui::SliderFloat("minimum height",&context.pointsGenerationParameters.min_height, 0.f, 1.f);
-        ImGui::SliderFloat("maximum height",&context.pointsGenerationParameters.max_height, 0.f, 1.f);
+        ImGui::SliderFloat("minimum height", &context.pointsGenerationParameters.min_height, 0.f, 1.f);
+        ImGui::SliderFloat("maximum height", &context.pointsGenerationParameters.max_height, 0.f, 1.f);
+    }
+
+    if (ImGui::CollapsingHeader("Mask", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        ImGui::SliderFloat("Mask Amplitude", &context.maskGenerationParameters.mask_amplitude, 0.5, 1);
+        ImGui::SliderFloat("Mask Scale", &context.maskGenerationParameters.mask_scale, 1, 5);
+    }
+
+    if (ImGui::Button("Generate random positions"))
+    {
+        generateObjectsPositions(context);
     }
 
     if (ImGui::Button("Appliquer"))

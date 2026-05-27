@@ -10,11 +10,6 @@
 #include <glm/gtx/norm.hpp>
 #include <iostream>
 
-
-
-
-
-
 bool isValid(glm::vec2 candidate, glm::vec2 sampleRegionSize, float cellSize, float radius, std::vector<glm::vec2> &points, std::vector<std::vector<int>> &grid)
 {
     if (candidate.x >= 0 && candidate.x < sampleRegionSize.x && candidate.y >= 0 && candidate.y < sampleRegionSize.y)
@@ -160,32 +155,29 @@ float sampleHeightmap(AppContext const &context, float u, float v)
     return static_cast<float>(c.r) / 255.0f;
 }
 
-Color lerpColor(const Color& col1, const Color& col2, float ratio)
+Color lerpColor(const Color &col1, const Color &col2, float ratio)
 {
 
     Color result;
 
     result.r = static_cast<unsigned char>(
-        col1.r + (col2.r - col1.r) * ratio
-    );
+        col1.r + (col2.r - col1.r) * ratio);
 
     result.g = static_cast<unsigned char>(
-        col1.g + (col2.g - col1.g) * ratio
-    );
+        col1.g + (col2.g - col1.g) * ratio);
 
     result.b = static_cast<unsigned char>(
-        col1.b + (col2.b - col1.b) * ratio
-    );
+        col1.b + (col2.b - col1.b) * ratio);
 
     result.a = static_cast<unsigned char>(
-        col1.a + (col2.a - col1.a) * ratio
-    );
+        col1.a + (col2.a - col1.a) * ratio);
 
     return result;
 }
 
-float ratio(float inf, float sup, float num){
-    return (num-inf)/(sup-inf);
+float ratio(float inf, float sup, float num)
+{
+    return (num - inf) / (sup - inf);
 }
 
 void generateHeightmap(AppContext &context)
@@ -212,25 +204,25 @@ void generateHeightmap(AppContext &context)
     int const resolution = std::max(1, context.imageGenerationParameters.resolution);
 
     context.heightmapImage = GenImageFromNoiseFunction<float>(resolution, resolution, PIXELFORMAT_UNCOMPRESSED_R32,
-    [&](glm::vec2 const &p) -> float
-    {
-        // TODO(student): implement stack based noise and island mask
-        float octave_noise = octaveNoise(
-            p,
-            perlinNoise,
-            context.imageGenerationParameters.octaves,
-            context.imageGenerationParameters.lacunarity,
-            context.imageGenerationParameters.gain,
-            context.imageGenerationParameters.amplitude,
-            context.imageGenerationParameters.frequency);
-        
-     return octave_noise * radialMask(p);
-        //   perlinNoiseSeeded(p * context.imageGenerationParameters.noiseScale, context.imageGenerationParameters.noiseSeed) * 0.5f + 0.5f);
-    });
+                                                              [&](glm::vec2 const &p) -> float
+                                                              {
+                                                                  // TODO(student): implement stack based noise and island mask
+                                                                  float octave_noise = octaveNoise(
+                                                                      p,
+                                                                      perlinNoise,
+                                                                      context.imageGenerationParameters.octaves,
+                                                                      context.imageGenerationParameters.lacunarity,
+                                                                      context.imageGenerationParameters.gain,
+                                                                      context.imageGenerationParameters.amplitude,
+                                                                      context.imageGenerationParameters.frequency);
+
+                                                                  return octave_noise * radialMask(p, context.maskGenerationParameters);
+                                                                  //   perlinNoiseSeeded(p * context.imageGenerationParameters.noiseScale, context.imageGenerationParameters.noiseSeed) * 0.5f + 0.5f);
+                                                              });
 
     // exemple conversion from heightmap to color image
     context.image = TransformImage<float, Color>(context.heightmapImage, [&](float const &v, int const, int const)
-    {
+                                                 {
     const Environnement env = context.env;
     const PaletteduTerrain p = env.biomeNormal;
 
@@ -285,8 +277,7 @@ void generateHeightmap(AppContext &context)
     }
     else {
         return p.neige;
-    }
-    }, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
+    } }, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
 
     context.texture = LoadTextureFromImage(context.image);
     if (context.model.meshCount > 0)

@@ -59,16 +59,18 @@ float perlinNoiseSeeded(glm::vec2 const &position, int seed)
     return glm::perlin(position + cachedOffset);
 }
 
-float radialMask(glm::vec2 const &p)
+float radialMask(glm::vec2 const &p, MaskGenerationParameters &maskGenerationParameters)
 {
 
     // normalisation de la fonction
     float normalize_position_x = (p.x - 0.5) / 0.5;
     float normalize_position_y = (p.y - 0.5) / 0.5;
 
-    float facteur_scale = 3.5f;
+    float facteur_scale = maskGenerationParameters.mask_scale;
 
-    float gaussian_function = std::exp(facteur_scale * (-normalize_position_x * normalize_position_x - normalize_position_y * normalize_position_y));
+    float amplitude = maskGenerationParameters.mask_amplitude;
+
+    float gaussian_function = amplitude * std::exp(facteur_scale * (-normalize_position_x * normalize_position_x - normalize_position_y * normalize_position_y));
     return gaussian_function;
 }
 
