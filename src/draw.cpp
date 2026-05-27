@@ -42,8 +42,9 @@ void drawCubes(AppContext const &context, Matrix const &terrainCentering)
         Matrix const centeredTranslation{MatrixMultiply(objectTranslation, terrainCentering)};
         Matrix const scale{MatrixScale(context.cubeScale, context.cubeScale, context.cubeScale)};
         Matrix const transform{MatrixMultiply(scale, centeredTranslation)};
-        Vector3 treePosition = {pos.x * context.terrainSize.x - context.terrainSize.x * 0.5f, pos.z * context.terrainSize.y, pos.y * context.terrainSize.z - context.terrainSize.z * 0.5f};
-        DrawModel(context.tree, treePosition, 0.5F, WHITE);
+        Vector3 treePosition ={pos.x * context.terrainSize.x - context.terrainSize.x * 0.5f,pos.z * context.terrainSize.y,pos.y * context.terrainSize.z - context.terrainSize.z * 0.5f};
+        DrawModel(context.tree, treePosition, 0.2F, WHITE); 
+        
     }
 }
 
