@@ -19,6 +19,7 @@ Pour le masque, je suis parti de la fonction gaussienne trouvée sur Wikipédia.
 
 Cependant, nous avons besoin de points ((x, y)). Il nous faut donc une fonction gaussienne bidimensionnelle, que j’ai trouvée sur ce site : [Fonction gaussienne bidimensionnelle](https://wikiland.org/fr/Gaussian_function).
 
+J’ai également ajouté un facteur permettant de moduler l’intensité de la fonction, afin que les valeurs soient nulles sur tous les bords et qu’aucune île n’apparaisse.
 
 
 ![GeoGebra fonction gaussienne 3D](screenshots/geogebra_3D.png)
