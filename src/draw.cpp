@@ -82,7 +82,7 @@ void drawImGui(AppContext &context)
     if (ImGui::CollapsingHeader("Noise", ImGuiTreeNodeFlags_DefaultOpen))
     {
         ImGui::SliderInt("Octave", &context.imageGenerationParameters.octaves, 1, 8);
-        ImGui::SliderFloat("Lacunarity", &context.imageGenerationParameters.lacunarity, 0.01f, 1.0f);
+        ImGui::SliderFloat("Lacunarity", &context.imageGenerationParameters.lacunarity, 0.01f, 5.0f);
         ImGui::SliderFloat("Gain", &context.imageGenerationParameters.gain, 0.01f, 1.0f),
             ImGui::SliderFloat("Amplitude", &context.imageGenerationParameters.amplitude, 0.01f, 1.0f);
         ImGui::SliderFloat("Frequency", &context.imageGenerationParameters.frequency, 0.01f, 5.0f);
