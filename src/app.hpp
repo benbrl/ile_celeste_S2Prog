@@ -10,11 +10,11 @@ struct ImageGenerationParameters
     int noiseSeed{0};
     float noiseScale{4.0f};
     int resolution{256};
-    int octaves{4};
+    int octaves{7};
     float lacunarity{2.0f};
-    float gain{0.5f};
-    float amplitude{0.5f};
-    float frequency = {1.0f};
+    float gain{0.574f};
+    float amplitude{0.570f};
+    float frequency = {2.832f};
 };
 
 struct PointsGenerationParameters
