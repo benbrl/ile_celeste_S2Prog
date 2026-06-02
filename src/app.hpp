@@ -21,10 +21,10 @@ struct PointsGenerationParameters
 {
     // TODO(student): add parameters for points generation (ex: poisson disk radius, etc).
     int numSampleRejection{30};
-    float radius{0.08};
+    float radius{0.04};
 
-    float min_height{0.f};
-    float max_height{1.f};
+    float min_height{0.157f};
+    float max_height{0.626f};
 
     glm::vec2 sampleRegionSize{1.0f, 1.0f};
 };
