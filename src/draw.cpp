@@ -43,7 +43,7 @@ void drawCubes(AppContext const &context, Matrix const &terrainCentering)
         Matrix const scale{MatrixScale(context.cubeScale, context.cubeScale, context.cubeScale)};
         Matrix const transform{MatrixMultiply(scale, centeredTranslation)};
         Vector3 treePosition = {pos.x * context.terrainSize.x - context.terrainSize.x * 0.5f, pos.z * context.terrainSize.y, pos.y * context.terrainSize.z - context.terrainSize.z * 0.5f};
-        DrawModel(context.tree, treePosition, 0.5F, WHITE);
+        DrawModel(context.tree, treePosition, 0.2F, WHITE);
     }
 }
 
@@ -54,19 +54,35 @@ void drawImGui(AppContext &context)
     {
         if (ImGui::Button("Palette Tropicale"))
         {
-            context.env = EnvironnementTropical;
+            context.env.biomeHumide = EnvironnementTropical.biomeHumide;
+            context.env.biomeSec = EnvironnementTropical.biomeSec;
+            context.env.biomeNormal = EnvironnementTropical.biomeNormal;
             generateHeightmap(context);
         }
         if (ImGui::Button("Palette Desert"))
         {
-            context.env = EnvironnementDesertique;
+            context.env.biomeHumide = EnvironnementDesertique.biomeHumide;
+            context.env.biomeSec = EnvironnementDesertique.biomeSec;
+            context.env.biomeNormal = EnvironnementDesertique.biomeNormal;
             generateHeightmap(context);
         }
         if (ImGui::Button("Palette Ile celeste"))
         {
-            context.env = EnvironnementCeleste;
+            context.env.biomeHumide = EnvironnementCeleste.biomeHumide;
+            context.env.biomeSec = EnvironnementCeleste.biomeSec;
+            context.env.biomeNormal = EnvironnementCeleste.biomeNormal;
             generateHeightmap(context);
         }
+    }
+
+    if (ImGui::CollapsingHeader("Custom Color", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+
+        ImGui::ColorEdit3("Eau", &context.vecColEau.x);
+        ImGui::ColorEdit3("Sable", &context.vecColSable.x);
+        ImGui::ColorEdit3("Herbe", &context.vecColHerbe.x);
+        ImGui::ColorEdit3("Roche", &context.vecColRoche.x);
+        ImGui::ColorEdit3("Neige", &context.vecColNeige.x);
     }
 
     if (ImGui::CollapsingHeader("objects", ImGuiTreeNodeFlags_DefaultOpen))
@@ -77,7 +93,7 @@ void drawImGui(AppContext &context)
     if (ImGui::CollapsingHeader("Noise", ImGuiTreeNodeFlags_DefaultOpen))
     {
         ImGui::SliderInt("Octave", &context.imageGenerationParameters.octaves, 1, 8);
-        ImGui::SliderFloat("Lacunarity", &context.imageGenerationParameters.lacunarity, 0.01f, 1.0f);
+        ImGui::SliderFloat("Lacunarity", &context.imageGenerationParameters.lacunarity, 0.1f, 3.0f);
         ImGui::SliderFloat("Gain", &context.imageGenerationParameters.gain, 0.01f, 1.0f),
             ImGui::SliderFloat("Amplitude", &context.imageGenerationParameters.amplitude, 0.01f, 1.0f);
         ImGui::SliderFloat("Frequency", &context.imageGenerationParameters.frequency, 0.01f, 5.0f);
@@ -104,6 +120,7 @@ void drawImGui(AppContext &context)
 
     if (ImGui::Button("Appliquer"))
     {
+
         generateHeightmap(context);
         regenerateMeshFromImage(context);
     }

@@ -131,7 +131,6 @@ struct AppContext
     Model model{};
     Model tree = LoadModel("../../resources/low-poly-tree.obj");
 
-
     std::vector<glm::vec3> objectPositions{};
 
     // A simple cube mesh and material we use to draw objects on the terrain.
@@ -147,9 +146,40 @@ struct AppContext
 
     MaskGenerationParameters maskGenerationParameters;
 
-    Environnement env = EnvironnementTropical;
-};
+    glm::vec3 vecColEau{
+        0.275f,
+        0.51f,
+        0.706f};
+    glm::vec3 vecColSable{0.933, 0.839, 0.686};
+    glm::vec3 vecColHerbe{0.133, 0.545, 0.133};
+    glm::vec3 vecColRoche{0.392, 0.392, 0.392};
+    glm::vec3 vecColNeige{1, 1, 1};
 
+    Color colEau{color_from(vecColEau * 255.f)},
+        colSable{color_from(vecColSable * 255.f)},
+        colHerbe{color_from(vecColHerbe * 255.f)},
+        colRoche{color_from(vecColRoche * 255.f)},
+        colNeige{color_from(vecColNeige * 255.f)};
+
+    Environnement EnvironnementCustom = {
+
+        PaletteduTerrain{
+            Color{40, 60, 110, 255},
+            Color{210, 230, 245, 255},
+            Color{110, 210, 180, 255},
+            Color{140, 150, 190, 255},
+            Color{255, 255, 255, 255}},
+        PaletteduTerrain{
+            colEau, colSable, colHerbe, colRoche, colNeige},
+        PaletteduTerrain{
+            Color{50, 90, 160, 255},
+            Color{220, 240, 250, 255},
+            Color{40, 180, 160, 255},
+            Color{150, 140, 200, 255},
+            Color{255, 255, 255, 255}}};
+
+    Environnement env = EnvironnementCustom;
+};
 
 Matrix getTerrainCenteringMatrix(AppContext const &context);
 float sampleHeightmap(AppContext const &context, float u, float v);
