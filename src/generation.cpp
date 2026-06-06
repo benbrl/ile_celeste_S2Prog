@@ -226,6 +226,22 @@ void generateHeightmap(AppContext &context)
     // exemple conversion from heightmap to color image
     context.image = TransformImage<float, Color>(context.heightmapImage, [&](float const &v, int const, int const)
                                                  {
+
+
+        context.colEau = color_from((context.vecColEau) * 255.f);
+        context.colSable = color_from((context.vecColSable) * 255.f);
+        context.colHerbe = color_from((context.vecColHerbe) * 255.f);
+        context.colRoche = color_from((context.vecColRoche) * 255.f);
+        context.colNeige = color_from((context.vecColNeige) * 255.f);
+
+        context.env.biomeNormal = {
+            context.colEau,
+            context.colSable,
+            context.colHerbe,
+            context.colRoche,
+            context.colNeige};
+
+
     const Environnement env = context.env;
     const PaletteduTerrain p = env.biomeNormal;
 
