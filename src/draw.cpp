@@ -42,9 +42,8 @@ void drawCubes(AppContext const &context, Matrix const &terrainCentering)
         Matrix const centeredTranslation{MatrixMultiply(objectTranslation, terrainCentering)};
         Matrix const scale{MatrixScale(context.cubeScale, context.cubeScale, context.cubeScale)};
         Matrix const transform{MatrixMultiply(scale, centeredTranslation)};
-        Vector3 treePosition = {pos.x * context.terrainSize.x - context.terrainSize.x * 0.5f,pos.z * context.terrainSize.y,pos.y * context.terrainSize.z - context.terrainSize.z * 0.5f};
-        DrawModel(context.tree, treePosition, 0.2F, WHITE); 
-        
+        Vector3 treePosition = {pos.x * context.terrainSize.x - context.terrainSize.x * 0.5f, pos.z * context.terrainSize.y, pos.y * context.terrainSize.z - context.terrainSize.z * 0.5f};
+        DrawModel(context.tree, treePosition, 0.2F, WHITE);
     }
 }
 
@@ -121,6 +120,19 @@ void drawImGui(AppContext &context)
 
     if (ImGui::Button("Appliquer"))
     {
+
+        context.colEau = color_from((context.vecColEau) * 255.f);
+        context.colSable = color_from((context.vecColSable) * 255.f);
+        context.colHerbe = color_from((context.vecColHerbe) * 255.f);
+        context.colRoche = color_from((context.vecColRoche) * 255.f);
+        context.colNeige = color_from((context.vecColNeige) * 255.f);
+
+        context.env.biomeNormal = {
+            context.colEau,
+            context.colSable,
+            context.colHerbe,
+            context.colRoche,
+            context.colNeige};
 
         generateHeightmap(context);
         regenerateMeshFromImage(context);
