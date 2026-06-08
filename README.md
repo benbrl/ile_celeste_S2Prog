@@ -79,6 +79,9 @@ Pour obtenir un rendu plus naturel, j'ai ajouté une rotation différente pour c
 
 Cette amélioration permet d'éviter que tous les arbres soient orientés dans la même direction et donne un aspect plus réaliste à la végétation de l'île.
 
+![Arbres](screenshots/arbres.png)
+
+
 ## Post-mortem
 
 **Qu'est-ce qui a bien fonctionné, quels ont été les problèmes rencontrés, comment les avez-vous surmontés, et que feriez-vous différemment ?**
