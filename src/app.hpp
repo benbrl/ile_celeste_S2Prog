@@ -14,7 +14,7 @@ struct ImageGenerationParameters
     float lacunarity{2.0f};
     float gain{0.574f};
     float amplitude{0.570f};
-    float frequency = {2.832f};
+    float frequency {2.832f};
 };
 
 struct PointsGenerationParameters
