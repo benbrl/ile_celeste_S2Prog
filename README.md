@@ -1,6 +1,6 @@
 # Ile celeste ☁️
 
-Projet réalisé par Benoît Baraille, Alexandre Grosdidier, Romane Jouvet et developpé sur macOS
+Projet réalisé par Benoît Baraille, Alexandre Grosdidier, Romane Jouvet et developpé sur macOS avec Clang.
 
 [Lien vers le rapport](https://docs.google.com/document/d/1Huf5Xu_5gK-BY1kQTZir8-NeNJDJKROrweMMHT_AiXE/edit?usp=sharing) (le même que le ReadMe)
 
@@ -78,11 +78,11 @@ Enfin, il a ensuite ajouté un système permettant de customiser la palette de c
 
 Benoît a implémenté le Poisson Disk Sampling en suivant pas à pas la vidéo tutoriel de Sebastian Lague. Au départ, il pensait que la grid_size était de 800 par 800, en pensant que c’était la taille en pixels de la fenêtre de l'application. il avait donc normalisé les valeurs à la fin pour être entre 0 et 1. Mais après réflexion, il a finalement simplifié en travaillant directement entre 0 et 1.
 Ensuite, ce tutoriel lui a permis de découvrir de nouvelles fonctions incluses dans la bibliothèque standard en C++. Par exemple, la fonction ceil, qui permet d’arrondir au nombre supérieur.
-il a également adapté le tutoriel en effectuant les modifications nécessaires dans la struct.
+Il a également adapté le tutoriel en effectuant les modifications nécessaires dans la struct.
 
 ## 4) Importation et génération d'arbres
 
-Romane tout d’abord commencé par créer un système de filtrage des points. Pour cela elle a créé des variables de hauteur minimale et maximale pour le placement de ceux-ci. Elle a ensuite mis la possibilité sur l’UI de changer celles-ci pour pouvoir placer les points dans la gamme de hauteur choisie, dans la mer ou en haut des montagnes par exemple.
+Romane a tout d’abord commencé par créer un système de filtrage des points. Pour cela elle a créé des variables de hauteur minimale et maximale pour le placement de ceux-ci. Elle a ensuite mis la possibilité sur l’UI de changer celles-ci pour pouvoir placer les points dans la gamme de hauteur choisie, dans la mer ou en haut des montagnes par exemple.
 
 ![Points placés haut](screenshots/arbreHauts.png)
 ![Points placés bas](screenshots/arbreBas.png)
