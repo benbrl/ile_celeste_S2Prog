@@ -45,56 +45,51 @@ Concernant les octaves, d'après mes tests, une valeur entre 4 et 7 donne les me
 
 ## 1) Bruit fractal
 
-Pour le noise, je suis parti sur le tutoriel de The Book of Shaders et je l’ai intégré.
-Le point un peu bloquant a été quand on appelle une fonction dans une autre fonction.
-Je ne comprenais pas bien le principe, mais Jules Fouchy me l’a expliqué ! (Fun fact : c’est le même système dans Coollab !)
-Après, j’ai ajouté une ImGui, sans oublier d’ajouter un bouton "Appliquer", sinon ça ne recharge pas les fonctions.
+Cette partie a d'abord été démarrée par Romane, puis reprise par Benoît. Pour le noise, nous nous sommes appuyés sur le tutoriel de The Book of Shaders. Le point un peu bloquant a été quand on appelle une fonction dans une autre fonction. Jules Fouchy nous a expliqué le principe (fun fact : c'est le même système dans Coollab !). Après, nous avons ajouté une ImGui, sans oublier d’ajouter un bouton "Appliquer", sinon ça ne recharge pas les fonctions.
 
 ## 2) Génération de heightmap et couleurs
 
-Pour le masque, je suis parti de la fonction gaussienne trouvée sur Wikipédia. Je l’ai ensuite utilisée dans GeoGebra afin de tester différents paramètres et de mieux comprendre son fonctionnement.
+Pour le masque, Benoît est parti de la fonction gaussienne trouvée sur Wikipédia, qu'il a ensuite testée dans GeoGebra afin de tester différents paramètres et de mieux comprendre son fonctionnement.
+
 
 ![GeoGebra fonction gaussienne](screenshots/geogebra.png)
 
 ![Calcul mathématique](screenshots/graphique_fonction_gaussienne.jpg)
 
-Cependant, nous avons besoin de points ((x, y)). Il nous faut donc une fonction gaussienne bidimensionnelle, que j’ai trouvée sur ce site : [Fonction gaussienne bidimensionnelle](https://wikiland.org/fr/Gaussian_function).
+Cependant, nous avons besoin de points ((x, y)). Il nous faut donc une fonction gaussienne bidimensionnelle, que Benoît a trouvé sur ce site : [Fonction gaussienne bidimensionnelle](https://wikiland.org/fr/Gaussian_function).
 
-J’ai également ajouté un facteur permettant de moduler l’intensité de la fonction, afin que les valeurs soient nulles sur tous les bords et qu’aucune île n’apparaisse.
+Il a également ajouté un facteur permettant de moduler l’intensité de la fonction, afin que les valeurs soient nulles sur tous les bords et qu’aucune île n’apparaisse.
 
 ![GeoGebra fonction gaussienne 3D](screenshots/geogebra_3D.png)
 
-Quant à la génération des couleurs, j’ai créé différentes classes contenant chacune d’entre elles cinq couleurs différentes. Toutes les couleurs sont stockées dans une classe générale, ou on injecte les couleurs après. Cela nous permet d’avoir différentes ambiances sur notre île. J’ai créé plusieurs ambiances différentes, codées en dur, me permettant donc d’avoir des “presets” de couleur qu’on peut choisir. 
+Alexandre a créé la fonctionnalité de  la génération des couleurs. Il a créé différentes classes contenant chacune d’entre elles cinq couleurs différentes. Toutes les couleurs sont stockées dans une classe générale, où on injecte les couleurs après. Cela nous permet d’avoir différentes ambiances sur notre île. Il a créé plusieurs ambiances différentes, codées en dur, me permettant donc d’avoir des “presets” de couleur qu’on peut choisir. 
 
-J’ai ensuite implémenté une rapide interpolation des couleurs entre deux couches. Celle-ci se base sur le ratio entre la hauteur de la couleur et celle du dessus, ainsi que les deux couleurs. Elle m’a permi donc d’avoir un dégradé naturel selon la hauteur du point. 
+Il a ensuite implémenté une interpolation rapide des couleurs entre deux couches. Celle-ci se base sur le ratio entre la hauteur de la couleur et celle du dessus, ainsi que les deux couleurs. Elle lui a permis donc d’avoir un dégradé naturel selon la hauteur du point. 
 
 ![Palette de couleurs 1](screenshots/palette1.png)
 ![Palette de couleurs 2](screenshots/palette2.png)
 
-
-J’ai ensuite implémenté un système permettant de customiser la palette de couleur actuelle. Pour cela j’ai utilisé la classe de pallette de couleur générale, et j’ai rajouté une interface permettant d’injecter directement des couleurs customisées. Elle permet donc après un refresh d’avoir les couleurs que l’on veut sur l’île.
+Enfin, il a ensuite ajouté un système permettant de customiser la palette de couleur actuelle. Pour cela j’ai utilisé la classe de pallette de couleur générale, et j’ai rajouté une interface permettant d’injecter directement des couleurs customisées. Elle permet donc après un refresh d’avoir les couleurs que l’on veut sur l’île.
 
 ![Palette de couleurs Custom](screenshots/paletteCustom.png)
 
 
 ## 3) Distribution de points par Poisson disk sampling
 
-J’ai suivi point par point la vidéo tutoriel de Sebastian Lague pour implémenter le Poisson Disk Sampling.
-Au départ, je pensais que la grid_size était de 800 par 800, en pensant que c’était la taille en pixels de la fenêtre de l'application. J’avais donc normalisé les valeurs à la fin pour être entre 0 et 1. Mais après réflexion, je suis simplement parti directement de 0 à 1, ce qui évite toute conversion inutile.
-Ensuite, ce tutoriel m’a permis de découvrir de nouvelles fonctions incluses dans la bibliothèque standard en C++. Par exemple, la fonction ceil, qui permet d’arrondir au nombre supérieur.
-J’ai également adapté le tutoriel en effectuant les modifications nécessaires dans la struct.
+Benoît a implémenté le Poisson Disk Sampling en suivant pas à pas la vidéo tutoriel de Sebastian Lague. Au départ, il pensait que la grid_size était de 800 par 800, en pensant que c’était la taille en pixels de la fenêtre de l'application. il avait donc normalisé les valeurs à la fin pour être entre 0 et 1. Mais après réflexion, il a finalement simplifié en travaillant directement entre 0 et 1.
+Ensuite, ce tutoriel lui a permis de découvrir de nouvelles fonctions incluses dans la bibliothèque standard en C++. Par exemple, la fonction ceil, qui permet d’arrondir au nombre supérieur.
+il a également adapté le tutoriel en effectuant les modifications nécessaires dans la struct.
 
 ## 4) Importation et génération d'arbres
 
-J’ai tout d’abord commencé par créer un système de filtrage des points. Pour cela j’ai créé des variables de hauteur minimale et maximale pour le placement de ceux-ci. J’ai ensuite mis la possibilité sur l’UI de changer celles-ci pour pouvoir placer les points dans la gamme de hauteur choisie, dans la mer ou en haut des montagnes par exemple.
+Romane tout d’abord commencé par créer un système de filtrage des points. Pour cela elle a créé des variables de hauteur minimale et maximale pour le placement de ceux-ci. Elle a ensuite mis la possibilité sur l’UI de changer celles-ci pour pouvoir placer les points dans la gamme de hauteur choisie, dans la mer ou en haut des montagnes par exemple.
 
 ![Points placés haut](screenshots/arbreHauts.png)
 ![Points placés bas](screenshots/arbreBas.png)
 
+Romane a remplacé les cubes du projet de base par un modèle 3D d'arbre au format .obj à l'aide de Raylib. Ce modèle est chargé au démarrage de l'application puis affiché aux positions générées par l'algorithme de Poisson Disk Sampling.
 
-Pour remplacer les cubes présents dans le projet de base, j'ai importé un modèle 3D d'arbre au format .obj à l'aide de Raylib. Ce modèle est chargé au démarrage de l'application puis affiché aux positions générées par l'algorithme de Poisson Disk Sampling.
-
-Pour obtenir un rendu plus naturel, j'ai ajouté une rotation différente pour chaque arbre autour de l'axe vertical (axe Y). Pour cela, l'angle de rotation est calculé à partir de la position de l'arbre, ce qui permet d'obtenir une orientation différente pour chaque arbre tout en conservant un résultat identique entre deux générations.
+Pour obtenir un rendu plus naturel, elle a ajouté une rotation différente pour chaque arbre autour de l'axe vertical (axe Y). Pour cela, l'angle de rotation est calculé à partir de la position de l'arbre, ce qui permet d'obtenir une orientation différente pour chaque arbre tout en conservant un résultat identique entre deux générations.
 
 Cette amélioration permet d'éviter que tous les arbres soient orientés dans la même direction et donne un aspect plus réaliste à la végétation de l'île.
 
@@ -105,9 +100,10 @@ Cette amélioration permet d'éviter que tous les arbres soient orientés dans l
 
 **Qu'est-ce qui a bien fonctionné, quels ont été les problèmes rencontrés, comment les avez-vous surmontés, et que feriez-vous différemment ?**
 
-L’un des plus gros problèmes rencontrés a été l’implémentation du Poisson Disk Sampling. C’était assez complexe à mettre en place. Pour y parvenir, j’ai repris la vidéo explicative étape par étape et j’ai également demandé de l’aide à Jules, qui m’a aidé à débuguer le problème.
+L’un des plus gros problèmes rencontrés a été l’implémentation du Poisson Disk Sampling. C’était assez complexe à mettre en place. Pour y parvenir, Benoît a repris la vidéo explicative étape par étape et a également demandé de l’aide à Jules, qui m’a aidé à débuguer le problème.
 
-Grâce à l’aide de d'enguerrand, j’ai aussi pu comprendre le problème lié au radial mask. En réalité, celui-ci fonctionnait correctement, mais il ne s’affichait pas aux bonnes coordonnées. Je pensais au départ que le problème venait d’une mauvaise normalisation. Cependant, après plusieurs vérifications, tout indiquait le contraire. Enguerrand m’a alors conseillé d’afficher uniquement le radial mask, ce qui m’a permis de comprendre qu’il fallait déplacer la gaussienne. En effet, comme on pouvait le voir sur les représentations 3D, son maximum n’était pas situé en (0.5 ; 0.5). J’ai donc corrigé ce point en recentrant et en normalisant correctement la fonction.
+
+Grâce à l’aide d’Enguerrand, Benoît a aussi pu comprendre le problème lié au radial mask. En réalité, celui-ci fonctionnait correctement, mais il ne s’affichait pas aux bonnes coordonnées. Il pensait au départ que le problème venait d’une mauvaise normalisation. Cependant, après plusieurs vérifications, tout indiquait le contraire. Enguerrand l'a alors conseillé d’afficher uniquement le radial mask, ce qui lui a permis de comprendre qu’il fallait déplacer la gaussienne. En effet, comme on pouvait le voir sur les représentations 3D, son maximum n’était pas situé en (0.5 ; 0.5). Benoît a donc corrigé ce point en recentrant et en normalisant correctement la fonction.
 
 **Avec plus de temps, qu'est-ce que vous pourriez ajouter ?**
 
