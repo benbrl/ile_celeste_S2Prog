@@ -64,6 +64,19 @@ J’ai également ajouté un facteur permettant de moduler l’intensité de la 
 
 ![GeoGebra fonction gaussienne 3D](screenshots/geogebra_3D.png)
 
+Quant à la génération des couleurs, j’ai créé différentes classes contenant chacune d’entre elles cinq couleurs différentes. Toutes les couleurs sont stockées dans une classe générale, ou on injecte les couleurs après. Cela nous permet d’avoir différentes ambiances sur notre île. J’ai créé plusieurs ambiances différentes, codées en dur, me permettant donc d’avoir des “presets” de couleur qu’on peut choisir. 
+
+J’ai ensuite implémenté une rapide interpolation des couleurs entre deux couches. Celle-ci se base sur le ratio entre la hauteur de la couleur et celle du dessus, ainsi que les deux couleurs. Elle m’a permi donc d’avoir un dégradé naturel selon la hauteur du point. 
+
+![Palette de couleurs 1](screenshots/palette1.png)
+![Palette de couleurs 2](screenshots/palette2.png)
+
+
+J’ai ensuite implémenté un système permettant de customiser la palette de couleur actuelle. Pour cela j’ai utilisé la classe de pallette de couleur générale, et j’ai rajouté une interface permettant d’injecter directement des couleurs customisées. Elle permet donc après un refresh d’avoir les couleurs que l’on veut sur l’île.
+
+![Palette de couleurs Custom](screenshots/paletteCustom.png)
+
+
 ## 3) Distribution de points par Poisson disk sampling
 
 J’ai suivi point par point la vidéo tutoriel de Sebastian Lague pour implémenter le Poisson Disk Sampling.
@@ -72,6 +85,12 @@ Ensuite, ce tutoriel m’a permis de découvrir de nouvelles fonctions incluses 
 J’ai également adapté le tutoriel en effectuant les modifications nécessaires dans la struct.
 
 ## 4) Importation et génération d'arbres
+
+J’ai tout d’abord commencé par créer un système de filtrage des points. Pour cela j’ai créé des variables de hauteur minimale et maximale pour le placement de ceux-ci. J’ai ensuite mis la possibilité sur l’UI de changer celles-ci pour pouvoir placer les points dans la gamme de hauteur choisie, dans la mer ou en haut des montagnes par exemple.
+
+![Points placés haut](screenshots/arbreHauts.png)
+![Points placés bas](screenshots/arbreBas.png)
+
 
 Pour remplacer les cubes présents dans le projet de base, j'ai importé un modèle 3D d'arbre au format .obj à l'aide de Raylib. Ce modèle est chargé au démarrage de l'application puis affiché aux positions générées par l'algorithme de Poisson Disk Sampling.
 
